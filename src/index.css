@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+@import "tailwindcss";
+
+:root {
+    font-family: "Rubik", sans-serif;
+    line-height: 1.5;
+    font-weight: 300;
+}
+
+body {
+    @apply min-h-screen flex justify-center bg-neutral-950 text-white;
+}

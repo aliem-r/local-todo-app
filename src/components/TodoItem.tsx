@@ -3,16 +3,22 @@ import {
     IconSquareRoundedCheckFilled,
 } from "@tabler/icons-react";
 import { cn } from "../utils";
-import { useState } from "react";
+import { memo } from "react";
 
 type TodoItemProps = {
     children: React.ReactNode;
     id: string;
+    completed: boolean;
+    onToggleCheck: (id: string) => void;
 };
 
-export default function TodoItem({ children, id }: TodoItemProps) {
-    const [completed, setCompleted] = useState(false);
-
+export default memo(function TodoItem({
+    children,
+    id,
+    completed,
+    onToggleCheck,
+}: TodoItemProps) {
+    console.log("TodoItem render");
     return (
         <li className="flex gap-2 bg-neutral-800 border border-neutral-800 hover:border-neutral-700 rounded-xl">
             <label
@@ -23,7 +29,7 @@ export default function TodoItem({ children, id }: TodoItemProps) {
                     type="checkbox"
                     id={id}
                     checked={completed}
-                    onChange={() => setCompleted(!completed)}
+                    onChange={() => onToggleCheck(id)}
                     className="hidden"
                 />
                 {completed ? (
@@ -49,4 +55,4 @@ export default function TodoItem({ children, id }: TodoItemProps) {
             </label>
         </li>
     );
-}
+});

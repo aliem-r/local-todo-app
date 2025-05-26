@@ -1,6 +1,30 @@
+import { useCallback, useState } from "react";
 import TodoItem from "./TodoItem";
 
 export default function TodoListWrapper() {
+    const [todoList, setTodoList] = useState([
+        { id: "1", text: "First Task", completed: true },
+        { id: "2", text: "Second Task", completed: false },
+        {
+            id: "3",
+            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, corporis est magni at debitis dolorem in non fugit delectus unde amet voluptatem laudantium cum facilis officiis similique ad saepe nihil.",
+            completed: false,
+        },
+    ]);
+
+    const handleToggleCheck = useCallback(
+        (id: string) => {
+            setTodoList((prev) =>
+                prev.map((item) =>
+                    item.id === id
+                        ? { ...item, completed: !item.completed }
+                        : item
+                )
+            );
+        },
+        [setTodoList]
+    );
+
     return (
         <section
             className={
@@ -10,14 +34,16 @@ export default function TodoListWrapper() {
             <h2 className="text-lg font-medium mb-1">To-dos</h2>
 
             <ul className="flex flex-col gap-2">
-                <TodoItem id="1">First Task</TodoItem>
-                <TodoItem id="2">Second Task</TodoItem>
-                <TodoItem id="3">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Iusto, corporis est magni at debitis dolorem in non fugit
-                    delectus unde amet voluptatem laudantium cum facilis
-                    officiis similique ad saepe nihil.
-                </TodoItem>
+                {todoList.map((todo) => (
+                    <TodoItem
+                        key={todo.id}
+                        id={todo.id}
+                        completed={todo.completed}
+                        onToggleCheck={handleToggleCheck}
+                    >
+                        {todo.text}
+                    </TodoItem>
+                ))}
             </ul>
         </section>
     );

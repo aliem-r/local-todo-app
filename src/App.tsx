@@ -1,11 +1,11 @@
 import Header from "./components/Header";
+import TodoListWrapper from "./components/TodoListWrapper";
 
-function App() {
+export default function App() {
     return (
         <>
             <Header />
+            <TodoListWrapper />
         </>
     );
 }
-
-export default App;

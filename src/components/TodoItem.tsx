@@ -23,7 +23,7 @@ export default memo(function TodoItem({
         <li className="flex gap-2 bg-neutral-800 border border-neutral-800 hover:border-neutral-700 rounded-xl">
             <label
                 htmlFor={id}
-                className="flex gap-2 cursor-pointer p-3 select-none"
+                className="flex flex-1 gap-2 cursor-pointer p-3 select-none"
             >
                 <input
                     type="checkbox"

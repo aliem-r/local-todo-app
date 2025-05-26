@@ -1,40 +1,19 @@
 import { useCallback, useState } from "react";
-import TodoItem from "./TodoItem";
+import { addTodo, getTodoList, toggleTodoCheck } from "../todos/todosService";
+import type { Todo } from "../todos/todoTypes";
 import NewTodoForm from "./NewTodoForm";
+import TodoItem from "./TodoItem";
 
 export default function TodoListWrapper() {
-    const [todoList, setTodoList] = useState([
-        { id: "1", text: "First Task", completed: true },
-        { id: "2", text: "Second Task", completed: false },
-        {
-            id: "3",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, corporis est magni at debitis dolorem in non fugit delectus unde amet voluptatem laudantium cum facilis officiis similique ad saepe nihil.",
-            completed: false,
-        },
-    ]);
+    const [todoList, setTodoList] = useState<Todo[]>(getTodoList());
 
-    const handleAddNewTodo = useCallback(
-        (text: string) => {
-            setTodoList((prev) => [
-                ...prev,
-                { id: crypto.randomUUID(), text, completed: false },
-            ]);
-        },
-        [setTodoList]
-    );
+    const handleAddNewTodo = useCallback((text: string) => {
+        setTodoList(addTodo(text));
+    }, []);
 
-    const handleToggleCheck = useCallback(
-        (id: string) => {
-            setTodoList((prev) =>
-                prev.map((item) =>
-                    item.id === id
-                        ? { ...item, completed: !item.completed }
-                        : item
-                )
-            );
-        },
-        [setTodoList]
-    );
+    const handleToggleCheck = useCallback((id: string) => {
+        setTodoList(toggleTodoCheck(id));
+    }, []);
 
     return (
         <section

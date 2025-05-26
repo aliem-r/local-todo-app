@@ -4,7 +4,8 @@
 :root {
     font-family: "Rubik", sans-serif;
     line-height: 1.5;
-    font-weight: 400;
+    font-weight: 300;
+    letter-spacing: 0.02em;
 }
 
 body {

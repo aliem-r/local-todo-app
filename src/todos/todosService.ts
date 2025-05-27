@@ -2,9 +2,9 @@ import type { Todo } from "./todoTypes";
 
 const TODOS_STORAGE_KEY = "todoList";
 
-export const getTodoList = () => {
+export const getTodoList = (): Todo[] => {
     const raw = localStorage.getItem(TODOS_STORAGE_KEY) ?? "[]";
-    return JSON.parse(raw) as Todo[];
+    return JSON.parse(raw);
 };
 
 export const clearTodoList = () => {

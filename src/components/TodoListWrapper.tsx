@@ -32,7 +32,6 @@ export default function TodoListWrapper() {
     }, []);
 
     const handleSaveEditedTodo = useCallback((id: string, text: string) => {
-        console.log("text:", text);
         setTodoList(editTodo(id, text));
         setEditingId(null);
     }, []);
@@ -77,13 +76,11 @@ export default function TodoListWrapper() {
                             key={todo.id}
                             id={todo.id}
                             text={todo.text}
-                            isEditing={editingId === todo.id}
-                            isDimmed={
-                                editingId !== null && editingId !== todo.id
-                            }
+                            editing={editingId === todo.id}
+                            dimmed={editingId !== null && editingId !== todo.id}
                             onStartEditing={handleStartEditing}
                             onSaveEditedTodo={handleSaveEditedTodo}
-                            onHandleCancelEditing={handleCancelEditing}
+                            onCancelEditing={handleCancelEditing}
                             completed={todo.completed}
                             onToggleCheck={handleToggleCheck}
                             onRemoveTodo={handleRemoveTodo}

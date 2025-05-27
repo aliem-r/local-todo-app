@@ -54,13 +54,9 @@ export const toggleTodoCheck = (id: string): Todo[] => {
     return newTodoList;
 };
 
-export const removeTodo = (id: string): Todo[] | undefined => {
+export const removeTodo = (id: string): Todo[] => {
     const todoList = getTodoList();
-    const todoIndex = getTodoIndex(id);
-
-    if (todoIndex === -1) return;
-
-    todoList.splice(todoIndex, 1);
-    saveTodoList(todoList);
-    return todoList;
+    const newList = todoList.filter((item) => item.id !== id);
+    saveTodoList(newList);
+    return newList;
 };

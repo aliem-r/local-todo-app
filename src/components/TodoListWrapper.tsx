@@ -4,6 +4,7 @@ import {
     addTodo,
     editTodo,
     getTodoList,
+    removeTodo,
     toggleTodoCheck,
 } from "../todos/todosService";
 import type { Todo } from "../todos/todoTypes";
@@ -40,6 +41,11 @@ export default function TodoListWrapper() {
         setEditingId(null);
     }, []);
 
+    const handleRemoveTodo = useCallback((id: string) => {
+        setTodoList(removeTodo(id));
+        setEditingId(null);
+    }, []);
+
     return (
         <section
             className={cn(
@@ -72,11 +78,15 @@ export default function TodoListWrapper() {
                             id={todo.id}
                             text={todo.text}
                             isEditing={editingId === todo.id}
+                            isDimmed={
+                                editingId !== null && editingId !== todo.id
+                            }
                             onStartEditing={handleStartEditing}
                             onSaveEditedTodo={handleSaveEditedTodo}
                             onHandleCancelEditing={handleCancelEditing}
                             completed={todo.completed}
                             onToggleCheck={handleToggleCheck}
+                            onRemoveTodo={handleRemoveTodo}
                         />
                     ))}
                 </ul>

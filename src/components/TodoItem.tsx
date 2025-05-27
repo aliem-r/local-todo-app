@@ -153,7 +153,8 @@ export default memo(function TodoItem({
                 <button
                     onClick={() => onStartEditing(id)}
                     className={cn(
-                        "opacity-0 group-hover:opacity-100 transition",
+                        "opacity-0 transition",
+                        !dimmed && "group-hover:opacity-100",
                         "transition duration-100 cursor-pointer text-neutral-600  hover:bg-neutral-700/40 hover:text-neutral-100 p-1 rounded-lg mr-2 mt-2",
                         editing &&
                             "text-neutral-100 bg-neutral-700 hover:bg-neutral-600 opacity-100"

@@ -1,20 +1,22 @@
-import { useCallback, useEffect, useState } from "react";
-import { addTodo, getTodoList, toggleTodoCheck } from "../todos/todosService";
+import { IconSquareRoundedCheck } from "@tabler/icons-react";
+import { useCallback, useState } from "react";
+import {
+    addTodo,
+    editTodo,
+    getTodoList,
+    toggleTodoCheck,
+} from "../todos/todosService";
 import type { Todo } from "../todos/todoTypes";
+import { cn } from "../utils";
+import CompletedProgress from "./CompletedProgress";
 import NewTodoForm from "./NewTodoForm";
 import TodoItem from "./TodoItem";
-import CompletedProgress from "./CompletedProgress";
-import { cn } from "../utils";
-import { IconSquareRoundedCheck } from "@tabler/icons-react";
 
 export default function TodoListWrapper() {
     const [todoList, setTodoList] = useState<Todo[]>(getTodoList());
-    const [completed, setCompleted] = useState(0);
+    const [editingId, setEditingId] = useState<string | null>(null);
 
-    useEffect(() => {
-        const completed = todoList.filter((todo) => todo.completed).length;
-        setCompleted(completed);
-    }, [todoList]);
+    const completed = todoList.filter((todo) => todo.completed).length;
 
     const handleAddNewTodo = useCallback((text: string) => {
         setTodoList(addTodo(text));
@@ -22,6 +24,20 @@ export default function TodoListWrapper() {
 
     const handleToggleCheck = useCallback((id: string) => {
         setTodoList(toggleTodoCheck(id));
+    }, []);
+
+    const handleStartEditing = useCallback((id: string) => {
+        setEditingId(id);
+    }, []);
+
+    const handleSaveEditedTodo = useCallback((id: string, text: string) => {
+        console.log("text:", text);
+        setTodoList(editTodo(id, text));
+        setEditingId(null);
+    }, []);
+
+    const handleCancelEditing = useCallback(() => {
+        setEditingId(null);
     }, []);
 
     return (
@@ -55,6 +71,10 @@ export default function TodoListWrapper() {
                             key={todo.id}
                             id={todo.id}
                             text={todo.text}
+                            isEditing={editingId === todo.id}
+                            onStartEditing={handleStartEditing}
+                            onSaveEditedTodo={handleSaveEditedTodo}
+                            onHandleCancelEditing={handleCancelEditing}
                             completed={todo.completed}
                             onToggleCheck={handleToggleCheck}
                         />

@@ -21,6 +21,7 @@ export const addTodo = (text: string): Todo[] => {
         id: crypto.randomUUID(),
         text,
         completed: false,
+        createdAt: Date.now(),
     };
 
     todoList.push(newTodo);

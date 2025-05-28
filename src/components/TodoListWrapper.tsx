@@ -1,5 +1,5 @@
 import { IconSquareRoundedCheck } from "@tabler/icons-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     addTodo,
     editTodo,
@@ -17,7 +17,20 @@ export default function TodoListWrapper() {
     const [todoList, setTodoList] = useState<Todo[]>(getTodoList());
     const [editingId, setEditingId] = useState<string | null>(null);
 
-    const completed = todoList.filter((todo) => todo.completed).length;
+    useEffect(() => {
+        const handleStorage = (e: StorageEvent) => {
+            if (e.key === "todoList") {
+                setTodoList(getTodoList());
+            }
+        };
+        window.addEventListener("storage", handleStorage);
+        return () => window.removeEventListener("storage", handleStorage);
+    }, []);
+
+    const completed = useMemo(() => {
+        console.log("Calculating completed todos...");
+        return todoList.filter((todo) => todo.completed).length;
+    }, [todoList]);
 
     const handleAddNewTodo = useCallback((text: string) => {
         setTodoList(addTodo(text));

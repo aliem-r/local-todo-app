@@ -1,4 +1,7 @@
-import { IconSquareRoundedCheck } from "@tabler/icons-react";
+import {
+    IconSquareRoundedCheck,
+    IconSquareRoundedCheckFilled,
+} from "@tabler/icons-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     addTodo,
@@ -27,8 +30,8 @@ export default function TodoListWrapper() {
         return () => window.removeEventListener("storage", handleStorage);
     }, []);
 
-    const completed = useMemo(() => {
-        return todoList.filter((todo) => todo.completed).length;
+    const completedTodos = useMemo(() => {
+        return todoList.filter((todo) => todo.completed);
     }, [todoList]);
 
     const handleAddNewTodo = useCallback((text: string) => {
@@ -61,7 +64,7 @@ export default function TodoListWrapper() {
         <section
             className={cn(
                 "flex flex-col gap-2.5 w-sm bg-neutral-900 p-5 rounded-3xl transition duration-300",
-                completed === todoList.length && todoList.length > 0
+                completedTodos.length === todoList.length && todoList.length > 0
                     ? "border border-green-800 shadow-lg  shadow-green-500/10"
                     : "border border-neutral-800"
             )}
@@ -71,10 +74,10 @@ export default function TodoListWrapper() {
                 percentage={
                     todoList.length === 0
                         ? 0
-                        : (completed * 100) / todoList.length
+                        : (completedTodos.length * 100) / todoList.length
                 }
                 className="mb-3 font-mono"
-            >{`${completed}/${todoList.length} DONE`}</CompletedProgress>
+            >{`${completedTodos.length}/${todoList.length} DONE`}</CompletedProgress>
             <NewTodoForm onAddNewTodo={handleAddNewTodo} />
             {todoList.length === 0 ? (
                 <div className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl text-neutral-600 p-3 text-sm font-[400]">
@@ -82,23 +85,61 @@ export default function TodoListWrapper() {
                     yet. Add one!
                 </div>
             ) : (
-                <ul className="flex flex-col gap-2">
-                    {todoList.map((todo) => (
-                        <TodoItem
-                            key={todo.id}
-                            id={todo.id}
-                            text={todo.text}
-                            editing={editingId === todo.id}
-                            dimmed={editingId !== null && editingId !== todo.id}
-                            onStartEditing={handleStartEditing}
-                            onSaveEditedTodo={handleSaveEditedTodo}
-                            onCancelEditing={handleCancelEditing}
-                            completed={todo.completed}
-                            onToggleCheck={handleToggleCheck}
-                            onRemoveTodo={handleRemoveTodo}
-                        />
-                    ))}
-                </ul>
+                <>
+                    <ul className="flex flex-col gap-2">
+                        {todoList
+                            .filter((todo) => !todo.completed)
+                            .map((todo) => (
+                                <TodoItem
+                                    key={todo.id}
+                                    id={todo.id}
+                                    text={todo.text}
+                                    editing={editingId === todo.id}
+                                    dimmed={
+                                        editingId !== null &&
+                                        editingId !== todo.id
+                                    }
+                                    onStartEditing={handleStartEditing}
+                                    onSaveEditedTodo={handleSaveEditedTodo}
+                                    onCancelEditing={handleCancelEditing}
+                                    completed={todo.completed}
+                                    onToggleCheck={handleToggleCheck}
+                                    onRemoveTodo={handleRemoveTodo}
+                                />
+                            ))}
+                    </ul>
+                    <h2 className="text-lg font-medium mt-8 mb-1">Completed</h2>
+                    {completedTodos.length === 0 ? (
+                        <div className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl text-neutral-600 p-3 text-sm font-[400]">
+                            <IconSquareRoundedCheckFilled
+                                size={20}
+                                stroke={1}
+                            />{" "}
+                            No completed todos yet
+                        </div>
+                    ) : (
+                        <ul className="flex flex-col gap-2">
+                            {completedTodos.map((todo) => (
+                                <TodoItem
+                                    key={todo.id}
+                                    id={todo.id}
+                                    text={todo.text}
+                                    editing={editingId === todo.id}
+                                    dimmed={
+                                        editingId !== null &&
+                                        editingId !== todo.id
+                                    }
+                                    onStartEditing={handleStartEditing}
+                                    onSaveEditedTodo={handleSaveEditedTodo}
+                                    onCancelEditing={handleCancelEditing}
+                                    completed={todo.completed}
+                                    onToggleCheck={handleToggleCheck}
+                                    onRemoveTodo={handleRemoveTodo}
+                                />
+                            ))}
+                        </ul>
+                    )}
+                </>
             )}
         </section>
     );

@@ -25,7 +25,7 @@ export default function NewTodoForm({ onAddNewTodo }: NewTodoFormProps) {
                 placeholder="Add a new to-do"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="transition duration-100 border placeholder-neutral-500 border-neutral-700 hover:border-neutral-600 outline-0 focus:border-neutral-500 h-11 px-3 rounded-xl w-full"
+                className="transition duration-100 text-sm font-[400] border placeholder-neutral-500 border-neutral-700 hover:border-neutral-600 outline-0 focus:border-neutral-500 h-11 px-3 rounded-xl w-full"
             />
             <button
                 type="submit"

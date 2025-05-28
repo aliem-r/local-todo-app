@@ -43,7 +43,7 @@ export default memo(function TodoItem({
             textarea.style.height = "auto";
             textarea.style.height = `${textarea.scrollHeight}px`;
         }
-    }, [editing, draft]);
+    }, [draft, editing]);
 
     useEffect(() => {
         const textarea = draftRef.current;
@@ -57,6 +57,7 @@ export default memo(function TodoItem({
     const handleSave = () => {
         const cleanDraft = draft.replace(/\s+/g, " ").trim();
         if (cleanDraft === "") return;
+        if (cleanDraft === text) return onCancelEditing();
         onSaveEditedTodo(id, cleanDraft);
         setDraft(cleanDraft);
     };

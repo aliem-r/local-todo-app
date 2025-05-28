@@ -1,3 +1,4 @@
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import TodoListWrapper from "./components/TodoListWrapper";
 
@@ -6,6 +7,7 @@ export default function App() {
         <>
             <Header />
             <TodoListWrapper />
+            <Footer />
         </>
     );
 }

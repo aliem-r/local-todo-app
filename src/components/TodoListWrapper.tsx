@@ -79,43 +79,49 @@ export default function TodoListWrapper() {
                 className="mb-3 font-mono"
             >{`${completedTodos.length}/${todoList.length} DONE`}</CompletedProgress>
             <NewTodoForm onAddNewTodo={handleAddNewTodo} />
-            {todoList.length === 0 ? (
+            {todoList.length === 0 ||
+            todoList.length === completedTodos.length ? (
                 <div className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl text-neutral-600 p-3 text-sm font-[400]">
-                    <IconSquareRoundedCheck size={20} stroke={1} /> No todos
+                    <IconSquareRoundedCheck size={20} stroke={1} /> No to-dos
                     yet. Add one!
                 </div>
             ) : (
+                <ul className="flex flex-col gap-2">
+                    {todoList
+                        .filter((todo) => !todo.completed)
+                        .map((todo) => (
+                            <TodoItem
+                                key={todo.id}
+                                id={todo.id}
+                                text={todo.text}
+                                editing={editingId === todo.id}
+                                dimmed={
+                                    editingId !== null && editingId !== todo.id
+                                }
+                                onStartEditing={handleStartEditing}
+                                onSaveEditedTodo={handleSaveEditedTodo}
+                                onCancelEditing={handleCancelEditing}
+                                completed={todo.completed}
+                                onToggleCheck={handleToggleCheck}
+                                onRemoveTodo={handleRemoveTodo}
+                            />
+                        ))}
+                </ul>
+            )}
+            {completedTodos.length > 0 && (
                 <>
-                    <ul className="flex flex-col gap-2">
-                        {todoList
-                            .filter((todo) => !todo.completed)
-                            .map((todo) => (
-                                <TodoItem
-                                    key={todo.id}
-                                    id={todo.id}
-                                    text={todo.text}
-                                    editing={editingId === todo.id}
-                                    dimmed={
-                                        editingId !== null &&
-                                        editingId !== todo.id
-                                    }
-                                    onStartEditing={handleStartEditing}
-                                    onSaveEditedTodo={handleSaveEditedTodo}
-                                    onCancelEditing={handleCancelEditing}
-                                    completed={todo.completed}
-                                    onToggleCheck={handleToggleCheck}
-                                    onRemoveTodo={handleRemoveTodo}
-                                />
-                            ))}
-                    </ul>
-                    <h2 className="text-lg font-medium mt-8 mb-1">Completed</h2>
+                    <div className="flex items-center gap-2 text-neutral-500 text-sm font-[400] mt-1 mb-1">
+                        {" "}
+                        <span>Completed</span>
+                        <hr className="flex-1" />
+                    </div>
                     {completedTodos.length === 0 ? (
                         <div className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl text-neutral-600 p-3 text-sm font-[400]">
                             <IconSquareRoundedCheckFilled
                                 size={20}
                                 stroke={1}
                             />{" "}
-                            No completed todos yet
+                            No completed to-dos yet
                         </div>
                     ) : (
                         <ul className="flex flex-col gap-2">

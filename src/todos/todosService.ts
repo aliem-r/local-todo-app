@@ -21,10 +21,10 @@ export const addTodo = (text: string): Todo[] => {
         id: crypto.randomUUID(),
         text,
         completed: false,
-        createdAt: Date.now(),
+        completedAt: null,
     };
 
-    todoList.push(newTodo);
+    todoList.unshift(newTodo);
     saveTodoList(todoList);
     return todoList;
 };
@@ -48,7 +48,13 @@ export const editTodo = (id: string, text: string): Todo[] => {
 export const toggleTodoCheck = (id: string): Todo[] => {
     const todoList = getTodoList();
     const newTodoList = todoList.map((item) =>
-        item.id === id ? { ...item, completed: !item.completed } : item
+        item.id === id
+            ? {
+                  ...item,
+                  completed: !item.completed,
+                  completedAt: !item.completed ? Date.now() : null,
+              }
+            : item
     );
 
     saveTodoList(newTodoList);

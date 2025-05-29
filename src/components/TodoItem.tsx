@@ -3,7 +3,7 @@ import {
     IconPencil,
     IconSquareRoundedCheck,
     IconSquareRoundedCheckFilled,
-    IconTrash,
+    IconSquareRoundedLetterIFilled,
 } from "@tabler/icons-react";
 import {
     Fragment,
@@ -96,9 +96,9 @@ export default memo(function TodoItem({
                             className="cursor-pointer"
                             onClick={() => onRemoveTodo(id)}
                         >
-                            <IconTrash
+                            <IconSquareRoundedLetterIFilled
                                 size={20}
-                                className="transition duration-100 text-rose-600 hover:text-rose-400 shrink-0"
+                                className="transition duration-100 rotate-90 text-rose-600 hover:text-rose-400 shrink-0"
                             />
                         </button>
                         <textarea

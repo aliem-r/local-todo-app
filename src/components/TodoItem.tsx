@@ -43,6 +43,7 @@ export default memo(function TodoItem({
     const [draft, setDraft] = useState(text);
     const draftRef = useRef<HTMLTextAreaElement | null>(null);
 
+    // Change textarea height based on content
     useLayoutEffect(() => {
         const textarea = draftRef.current;
 
@@ -52,6 +53,7 @@ export default memo(function TodoItem({
         }
     }, [draft, editing]);
 
+    // Move cursor to the end of the textarea when editing starts
     useEffect(() => {
         const textarea = draftRef.current;
 
@@ -64,7 +66,7 @@ export default memo(function TodoItem({
     const handleSave = () => {
         const cleanDraft = cleanText(draft);
         if (cleanDraft === "") return;
-        if (cleanDraft === text) return onCancelEditing();
+        if (cleanDraft === text) return onCancelEditing(); // If no change on save, cancel editing to avoid re-rendering todoList
         onSaveEditedTodo(id, cleanDraft);
         setDraft(cleanDraft);
     };

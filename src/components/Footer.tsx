@@ -7,7 +7,7 @@ export default function Footer() {
                 target="_blank"
                 className="text-neutral-400 hover:text-green-400 transition duration-100"
             >
-                @aliem-r
+                @aliem-r/local-todo-app
             </a>
         </footer>
     );

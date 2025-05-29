@@ -31,7 +31,7 @@ export default function TodoListWrapper() {
         return () => window.removeEventListener("storage", handleStorage);
     }, []);
 
-    const incompleteTodos = useMemo(
+    const pendingTodos = useMemo(
         () => todoList.filter((todo) => !todo.completed),
         [todoList]
     );
@@ -78,7 +78,7 @@ export default function TodoListWrapper() {
     const todoListSections = useMemo(
         () => [
             {
-                key: "incomplete",
+                key: "pending",
                 title: null,
                 emptyMessage: (
                     <div
@@ -89,7 +89,7 @@ export default function TodoListWrapper() {
                         to-dos yet. Add one!
                     </div>
                 ),
-                items: incompleteTodos,
+                items: pendingTodos,
             },
             {
                 key: "completed",
@@ -106,7 +106,7 @@ export default function TodoListWrapper() {
                 items: completedTodos,
             },
         ],
-        [incompleteTodos, completedTodos]
+        [pendingTodos, completedTodos]
     );
 
     return (

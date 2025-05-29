@@ -5,7 +5,14 @@ import {
     IconSquareRoundedCheckFilled,
     IconTrash,
 } from "@tabler/icons-react";
-import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+    Fragment,
+    memo,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react";
 import { cn } from "../utils";
 
 type TodoItemProps = {
@@ -82,7 +89,7 @@ export default memo(function TodoItem({
                 className="flex items-start flex-1 gap-2 cursor-pointer p-3 select-none overflow-hidden"
             >
                 {editing ? (
-                    <>
+                    <Fragment>
                         <button
                             className="cursor-pointer"
                             onClick={() => onRemoveTodo(id)}
@@ -110,9 +117,9 @@ export default memo(function TodoItem({
                             rows={1}
                             className="outline-0 text-sm h-5 flex-1 border-b border-neutral-700 relative overflow-hidden resize-none"
                         />
-                    </>
+                    </Fragment>
                 ) : (
-                    <>
+                    <Fragment>
                         <input
                             type="checkbox"
                             id={id}
@@ -140,7 +147,7 @@ export default memo(function TodoItem({
                         >
                             {text}
                         </span>
-                    </>
+                    </Fragment>
                 )}
             </label>
             {editing ? (

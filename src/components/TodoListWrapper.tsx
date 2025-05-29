@@ -15,6 +15,7 @@ import { cn } from "../utils";
 import CompletedProgress from "./CompletedProgress";
 import NewTodoForm from "./NewTodoForm";
 import TodoItem from "./TodoItem";
+import TodoListSection from "./TodoListSection";
 
 export default function TodoListWrapper() {
     const [todoList, setTodoList] = useState<Todo[]>(getTodoList());
@@ -31,10 +32,13 @@ export default function TodoListWrapper() {
         return () => window.removeEventListener("storage", handleStorage);
     }, []);
 
+    // Filter todos that are not completed
     const pendingTodos = useMemo(
         () => todoList.filter((todo) => !todo.completed),
         [todoList]
     );
+
+    // Filter and sort completed todos by completion date
     const completedTodos = useMemo(
         () =>
             todoList
@@ -43,12 +47,14 @@ export default function TodoListWrapper() {
         [todoList]
     );
 
+    // Calculate the percentage of completed todos
     const percentage = useMemo(() => {
         return todoList.length === 0
             ? 0
             : (completedTodos.length * 100) / todoList.length;
     }, [todoList.length, completedTodos.length]);
 
+    // Handlers for adding, editing, toggling, and removing todos
     const handleAddNewTodo = useCallback((text: string) => {
         setTodoList(addTodo(text));
     }, []);
@@ -60,12 +66,10 @@ export default function TodoListWrapper() {
     const handleStartEditing = useCallback((id: string) => {
         setEditingId(id);
     }, []);
-
     const handleSaveEditedTodo = useCallback((id: string, text: string) => {
         setTodoList(editTodo(id, text));
         setEditingId(null);
     }, []);
-
     const handleCancelEditing = useCallback(() => {
         setEditingId(null);
     }, []);
@@ -74,40 +78,6 @@ export default function TodoListWrapper() {
         setTodoList(removeTodo(id));
         setEditingId(null);
     }, []);
-
-    const todoListSections = useMemo(
-        () => [
-            {
-                key: "pending",
-                title: null,
-                emptyMessage: (
-                    <div
-                        className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl
-                       text-neutral-600 p-3 text-sm font-[400]"
-                    >
-                        <IconSquareRoundedCheck size={20} stroke={1} /> No
-                        to-dos yet. Add one!
-                    </div>
-                ),
-                items: pendingTodos,
-            },
-            {
-                key: "completed",
-                title: "Completed",
-                emptyMessage: (
-                    <div
-                        className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl
-                       text-neutral-600 p-3 text-sm font-[400]"
-                    >
-                        <IconSquareRoundedCheckFilled size={20} stroke={1} /> No
-                        completed to-dos yet
-                    </div>
-                ),
-                items: completedTodos,
-            },
-        ],
-        [pendingTodos, completedTodos]
-    );
 
     return (
         <section
@@ -126,42 +96,53 @@ export default function TodoListWrapper() {
                 {`${completedTodos.length}/${todoList.length} DONE`}
             </CompletedProgress>
             <NewTodoForm onAddNewTodo={handleAddNewTodo} />
-            {todoListSections.map(({ key, title, emptyMessage, items }) =>
-                key === "completed" && todoList.length === 0 ? null : (
-                    <Fragment key={key}>
-                        {title && (
-                            <div className="flex items-center gap-2 text-neutral-600 text-sm font-[400] mt-1 mb-1">
-                                <span>{title}</span>
-                                <hr className="flex-1 border-neutral-700" />
-                            </div>
-                        )}
-                        {items.length === 0 ? (
-                            emptyMessage
-                        ) : (
-                            <ul className="flex flex-col gap-2">
-                                {items.map((todo) => (
-                                    <TodoItem
-                                        key={todo.id}
-                                        id={todo.id}
-                                        text={todo.text}
-                                        editing={editingId === todo.id}
-                                        dimmed={
-                                            editingId !== null &&
-                                            editingId !== todo.id
-                                        }
-                                        onStartEditing={handleStartEditing}
-                                        onSaveEditedTodo={handleSaveEditedTodo}
-                                        onCancelEditing={handleCancelEditing}
-                                        completed={todo.completed}
-                                        onToggleCheck={handleToggleCheck}
-                                        onRemoveTodo={handleRemoveTodo}
-                                    />
-                                ))}
-                            </ul>
-                        )}
-                    </Fragment>
-                )
+            <TodoListSection
+                emptyMessage={
+                    <div
+                        className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl
+                       text-neutral-600 p-3 text-sm font-[400]"
+                    >
+                        <IconSquareRoundedCheck size={20} stroke={1} /> No
+                        to-dos yet. Add one!
+                    </div>
+                }
+                items={pendingTodos}
+                editingId={editingId}
+                onStartEditing={handleStartEditing}
+                onSaveEditedTodo={handleSaveEditedTodo}
+                onCancelEditing={handleCancelEditing}
+                onToggleCheck={handleToggleCheck}
+                onRemoveTodo={handleRemoveTodo}
+            />
+            {todoList.length > 0 && (
+                <div className="flex items-center gap-2 text-neutral-600 text-sm font-[400] mt-1 mb-1">
+                    <span>Completed</span>
+                    <hr className="flex-1 border-neutral-700" />
+                </div>
             )}
+            <TodoListSection
+                emptyMessage={
+                    todoList.length === 0 ? null : (
+                        <div
+                            className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl
+                       text-neutral-600 p-3 text-sm font-[400]"
+                        >
+                            <IconSquareRoundedCheckFilled
+                                size={20}
+                                stroke={1}
+                            />{" "}
+                            No completed to-dos yet
+                        </div>
+                    )
+                }
+                items={completedTodos}
+                editingId={editingId}
+                onStartEditing={handleStartEditing}
+                onSaveEditedTodo={handleSaveEditedTodo}
+                onCancelEditing={handleCancelEditing}
+                onToggleCheck={handleToggleCheck}
+                onRemoveTodo={handleRemoveTodo}
+            />
         </section>
     );
 }

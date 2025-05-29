@@ -13,7 +13,7 @@ import {
     useRef,
     useState,
 } from "react";
-import { cn } from "../utils";
+import { cleanText, cn } from "../utils";
 
 type TodoItemProps = {
     id: string;
@@ -62,7 +62,7 @@ export default memo(function TodoItem({
     }, [editing]);
 
     const handleSave = () => {
-        const cleanDraft = draft.replace(/\s+/g, " ").trim();
+        const cleanDraft = cleanText(draft);
         if (cleanDraft === "") return;
         if (cleanDraft === text) return onCancelEditing();
         onSaveEditedTodo(id, cleanDraft);

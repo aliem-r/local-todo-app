@@ -1,5 +1,6 @@
 import { IconPlus } from "@tabler/icons-react";
 import { useState, type FormEvent } from "react";
+import { cleanText } from "../utils";
 
 type NewTodoFormProps = {
     onAddNewTodo: (text: string) => void;
@@ -10,7 +11,7 @@ export default function NewTodoForm({ onAddNewTodo }: NewTodoFormProps) {
 
     const handleAddNewTodo = (e: FormEvent) => {
         e.preventDefault();
-        const cleanInput = input.replace(/\s+/g, " ").trim();
+        const cleanInput = cleanText(input);
         if (cleanInput === "") return;
         onAddNewTodo(cleanInput);
         setInput("");

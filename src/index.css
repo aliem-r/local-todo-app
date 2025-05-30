@@ -11,3 +11,11 @@
 body {
     @apply min-h-screen flex justify-center bg-neutral-950 text-white;
 }
+
+.hold-to-delete-md {
+    @apply duration-[1500ms] ease-linear w-full bg-rose-500;
+}
+
+.hold-to-delete-mu {
+    @apply duration-[300ms] ease-in w-0 bg-rose-500/10;
+}

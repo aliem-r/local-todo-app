@@ -71,7 +71,7 @@ export default memo(function TodoListOptions({
                 onMouseLeave={handleMouseUp}
                 id="clear-todo-list"
                 className={cn(
-                    "group flex gap-1 relative overflow-hidden transition duration-100 items-center text-sm font-[400] tracking-wide text-neutral-300 hover:text-rose-600 cursor-pointer rounded-xl bg-neutral-800 hover:bg-neutral-800 border border-neutral-700 hover:border-rose-600 py-1.5 px-2.5",
+                    "group flex gap-1 relative overflow-hidden transition duration-100 items-center text-sm font-[400] tracking-wide text-neutral-400 hover:text-rose-600 cursor-pointer rounded-xl bg-neutral-800 hover:bg-neutral-800 border border-neutral-700 hover:border-rose-600 py-1.5 px-2.5",
                     activeButton === "clear-todo-list" &&
                         "hover:text-neutral-50 transition duration-[1500ms]"
                 )}

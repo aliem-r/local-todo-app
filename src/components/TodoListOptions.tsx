@@ -27,7 +27,7 @@ export default memo(function TodoListOptions({
             setActiveButton("");
         }, 1550);
     };
-    const handleMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleMouseUp = () => {
         setActiveButton("");
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);

@@ -11,6 +11,13 @@ export const clearTodoList = () => {
     localStorage.removeItem(TODOS_STORAGE_KEY);
 };
 
+export const clearCompleted = () => {
+    const todoList = getTodoList();
+    const newList = todoList.filter((item) => !item.completed);
+    saveTodoList(newList);
+    return newList;
+};
+
 export const saveTodoList = (todoList: Todo[]) => {
     localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todoList));
 };

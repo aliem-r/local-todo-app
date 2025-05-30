@@ -5,6 +5,8 @@ import {
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import {
     addTodo,
+    clearCompleted,
+    clearTodoList,
     editTodo,
     getTodoList,
     removeTodo,
@@ -14,7 +16,7 @@ import type { Todo } from "../todos/todoTypes";
 import { cn } from "../utils";
 import CompletedProgress from "./CompletedProgress";
 import NewTodoForm from "./NewTodoForm";
-import TodoItem from "./TodoItem";
+import TodoListControls from "./TodoListOptions";
 import TodoListSection from "./TodoListSection";
 
 export default function TodoListWrapper() {
@@ -79,6 +81,15 @@ export default function TodoListWrapper() {
         setEditingId(null);
     }, []);
 
+    const handleClearCompleted = useCallback(() => {
+        setTodoList(clearCompleted());
+    }, []);
+
+    const handleClearTodoList = useCallback(() => {
+        clearTodoList();
+        setTodoList([]);
+    }, []);
+
     return (
         <section
             className={cn(
@@ -99,8 +110,8 @@ export default function TodoListWrapper() {
             <TodoListSection
                 emptyMessage={
                     <div
-                        className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl
-                       text-neutral-600 p-3 text-sm font-[400]"
+                        className="flex items-center gap-2 border border-dashed border-neutral-700/70 rounded-xl
+                       text-neutral-600/60 p-3 text-sm font-[400]"
                     >
                         <IconSquareRoundedCheck size={20} stroke={1} /> No
                         to-dos yet. Add one!
@@ -124,8 +135,8 @@ export default function TodoListWrapper() {
                 emptyMessage={
                     todoList.length === 0 ? null : (
                         <div
-                            className="flex items-center gap-2 border border-dashed border-neutral-700 rounded-xl
-                       text-neutral-600 p-3 text-sm font-[400]"
+                            className="flex items-center gap-2 border border-dashed border-neutral-700/70 rounded-xl
+                       text-neutral-600/60 p-3 text-sm font-[400]"
                         >
                             <IconSquareRoundedCheckFilled
                                 size={20}
@@ -143,6 +154,19 @@ export default function TodoListWrapper() {
                 onToggleCheck={handleToggleCheck}
                 onRemoveTodo={handleRemoveTodo}
             />
+            {todoList.length > 0 && (
+                <Fragment>
+                    <div className="flex items-center gap-2 text-neutral-600 text-sm font-[400] mt-1 mb-1">
+                        <span>To-do Options</span>
+                        <hr className="flex-1 border-neutral-700" />
+                    </div>
+                    <TodoListControls
+                        hasCompletedTasks={completedTodos.length > 0}
+                        onClearCompleted={handleClearCompleted}
+                        onClearTodoList={handleClearTodoList}
+                    />
+                </Fragment>
+            )}
         </section>
     );
 }

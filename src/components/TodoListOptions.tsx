@@ -60,7 +60,7 @@ export default memo(function TodoListOptions({
                 ></span>
                 <IconSquareRoundedLetterI
                     className="rotate-90 z-10"
-                    size={20}
+                    size={18}
                     stroke={1.5}
                 />
                 <span className="z-10">Delete completed</span>
@@ -84,7 +84,7 @@ export default memo(function TodoListOptions({
                             : "hold-to-delete-mu"
                     )}
                 ></span>
-                <IconTrash className="z-10" size={20} stroke={1.5} />
+                <IconTrash className="z-10" size={18} stroke={1.5} />
                 <span className="z-10">Clear List</span>
             </button>
         </section>

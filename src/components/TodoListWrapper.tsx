@@ -105,7 +105,7 @@ export default function TodoListWrapper() {
             )}
         >
             <div className="relative flex items-center justify-between mb-3">
-                <h2 className="text-lg font-medium mb-1">To-dos</h2>
+                <h2 className="text-lg font-medium mb-1">Your to-dos</h2>
                 <TodoListOptions
                     pendingCount={pendingTodos.length}
                     completedCount={completedTodos.length}

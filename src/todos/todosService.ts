@@ -18,6 +18,17 @@ export const clearCompleted = () => {
     return newList;
 };
 
+export const markAllCompleted = () => {
+    const todoList = getTodoList();
+    const newList = todoList.map((item) =>
+        item.completed
+            ? item
+            : { ...item, completed: true, completedAt: Date.now() }
+    );
+    saveTodoList(newList);
+    return newList;
+};
+
 export const saveTodoList = (todoList: Todo[]) => {
     localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todoList));
 };

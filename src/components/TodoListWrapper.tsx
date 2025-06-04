@@ -2,13 +2,14 @@ import {
     IconSquareRoundedCheck,
     IconSquareRoundedCheckFilled,
 } from "@tabler/icons-react";
-import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     addTodo,
     clearCompleted,
     clearTodoList,
     editTodo,
     getTodoList,
+    markAllCompleted,
     removeTodo,
     toggleTodoCheck,
 } from "../todos/todosService";
@@ -16,7 +17,7 @@ import type { Todo } from "../todos/todoTypes";
 import { cn } from "../utils";
 import CompletedProgress from "./CompletedProgress";
 import NewTodoForm from "./NewTodoForm";
-import TodoListControls from "./TodoListOptions";
+import TodoListOptions from "./TodoListOptions";
 import TodoListSection from "./TodoListSection";
 
 export default function TodoListWrapper() {
@@ -81,11 +82,15 @@ export default function TodoListWrapper() {
         setEditingId(null);
     }, []);
 
-    const handleClearCompleted = useCallback(() => {
+    const handleMarkAllCompleted = useCallback(() => {
+        setTodoList(markAllCompleted());
+    }, []);
+
+    const handleRemoveCompleted = useCallback(() => {
         setTodoList(clearCompleted());
     }, []);
 
-    const handleClearTodoList = useCallback(() => {
+    const handleClearAll = useCallback(() => {
         clearTodoList();
         setTodoList([]);
     }, []);
@@ -95,11 +100,20 @@ export default function TodoListWrapper() {
             className={cn(
                 "flex flex-col gap-2.5 w-sm bg-neutral-900 p-5 rounded-3xl transition duration-300",
                 completedTodos.length === todoList.length && todoList.length > 0
-                    ? "border border-green-800 shadow-lg  shadow-green-500/10"
+                    ? "border border-green-800 shadow-lg shadow-green-500/10"
                     : "border border-neutral-800"
             )}
         >
-            <h2 className="text-lg font-medium mb-1">To-dos</h2>
+            <div className="relative flex items-center justify-between mb-3">
+                <h2 className="text-lg font-medium mb-1">To-dos</h2>
+                <TodoListOptions
+                    pendingCount={pendingTodos.length}
+                    completedCount={completedTodos.length}
+                    onMarkAllCompleted={handleMarkAllCompleted}
+                    onRemoveCompleted={handleRemoveCompleted}
+                    onClearAll={handleClearAll}
+                />
+            </div>
             <CompletedProgress
                 percentage={percentage}
                 className="mb-3 font-mono"
@@ -154,19 +168,6 @@ export default function TodoListWrapper() {
                 onToggleCheck={handleToggleCheck}
                 onRemoveTodo={handleRemoveTodo}
             />
-            {todoList.length > 0 && (
-                <Fragment>
-                    <div className="flex items-center gap-2 text-neutral-600 text-sm font-[400] mt-1 mb-1">
-                        <span>To-do Options</span>
-                        <hr className="flex-1 border-neutral-700" />
-                    </div>
-                    <TodoListControls
-                        hasCompletedTasks={completedTodos.length > 0}
-                        onClearCompleted={handleClearCompleted}
-                        onClearTodoList={handleClearTodoList}
-                    />
-                </Fragment>
-            )}
         </section>
     );
 }

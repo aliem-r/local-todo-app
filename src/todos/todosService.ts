@@ -23,7 +23,7 @@ export const markAllCompleted = () => {
     const newList = todoList.map((item) =>
         item.completed
             ? item
-            : { ...item, completed: true, completedAt: Date.now() }
+            : { ...item, completed: true, completedAt: Date.now() },
     );
     saveTodoList(newList);
     return newList;
@@ -56,7 +56,7 @@ export const editTodo = (id: string, text: string): Todo[] => {
     const todoList = getTodoList();
 
     const newTodoList = todoList.map((item) =>
-        item.id === id ? { ...item, text } : item
+        item.id === id ? { ...item, text } : item,
     );
 
     saveTodoList(newTodoList);
@@ -72,7 +72,7 @@ export const toggleTodoCheck = (id: string): Todo[] => {
                   completed: !item.completed,
                   completedAt: !item.completed ? Date.now() : null,
               }
-            : item
+            : item,
     );
 
     saveTodoList(newTodoList);

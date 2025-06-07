@@ -74,21 +74,21 @@ export default memo(function TodoItem({
     return (
         <li
             className={cn(
-                "group relative transition duration-100 flex items-start overflow-hidden bg-neutral-800 border border-neutral-800 hover:border-neutral-700 rounded-xl",
+                "group relative flex items-start overflow-hidden rounded-xl border border-neutral-800 bg-neutral-800 transition duration-100 hover:border-neutral-700",
                 editing && "border-neutral-500 hover:border-neutral-500",
-                dimmed && "hover:border-neutral-800"
+                dimmed && "hover:border-neutral-800",
             )}
         >
             <div
                 className={cn(
                     "absolute inset-0 z-10 bg-neutral-900/60 transition-opacity duration-100",
                     // when not dimmed, make it fully transparent and non-interactive
-                    dimmed ? "opacity-100" : "opacity-0 pointer-events-none"
+                    dimmed ? "opacity-100" : "pointer-events-none opacity-0",
                 )}
             />
             <label
                 htmlFor={id}
-                className="flex items-start flex-1 gap-2 cursor-pointer p-3 select-none overflow-hidden"
+                className="flex flex-1 cursor-pointer items-start gap-2 overflow-hidden p-3 select-none"
             >
                 {editing ? (
                     <Fragment>
@@ -98,7 +98,7 @@ export default memo(function TodoItem({
                         >
                             <IconSquareRoundedLetterIFilled
                                 size={20}
-                                className="transition duration-100 rotate-90 text-rose-600 hover:text-rose-400 shrink-0"
+                                className="shrink-0 rotate-90 text-rose-600 transition duration-100 hover:text-rose-400"
                             />
                         </button>
                         <textarea
@@ -117,7 +117,7 @@ export default memo(function TodoItem({
                                 }
                             }}
                             rows={1}
-                            className="outline-0 text-sm h-5 flex-1 border-b border-neutral-700 relative overflow-hidden resize-none"
+                            className="relative h-5 flex-1 resize-none overflow-hidden border-b border-neutral-700 text-sm outline-0"
                         />
                     </Fragment>
                 ) : (
@@ -132,19 +132,19 @@ export default memo(function TodoItem({
                         {completed ? (
                             <IconSquareRoundedCheckFilled
                                 size={20}
-                                className="text-green-400 shrink-0"
+                                className="shrink-0 text-green-400"
                             />
                         ) : (
                             <IconSquareRoundedCheck
                                 size={20}
                                 stroke={1.5}
-                                className="text-neutral-400 shrink-0"
+                                className="shrink-0 text-neutral-400"
                             />
                         )}
                         <span
                             className={cn(
                                 "text-sm",
-                                completed && "line-through text-neutral-400"
+                                completed && "text-neutral-400 line-through",
                             )}
                         >
                             {text}
@@ -155,7 +155,7 @@ export default memo(function TodoItem({
             {editing ? (
                 <button
                     onClick={() => handleSave()}
-                    className="transition duration-100 cursor-pointer text-neutral-100 bg-neutral-700 hover:bg-neutral-600 opacity-100 p-1 rounded-lg mr-2 mt-2"
+                    className="mt-2 mr-2 cursor-pointer rounded-lg bg-neutral-700 p-1 text-neutral-100 opacity-100 transition duration-100 hover:bg-neutral-600"
                 >
                     <IconDeviceFloppy size={20} stroke={1.5} />
                 </button>
@@ -165,9 +165,9 @@ export default memo(function TodoItem({
                     className={cn(
                         "opacity-0 transition",
                         !dimmed && "group-hover:opacity-100",
-                        "transition duration-100 cursor-pointer text-neutral-600  hover:bg-neutral-700/40 hover:text-neutral-100 p-1 rounded-lg mr-2 mt-2",
+                        "mt-2 mr-2 cursor-pointer rounded-lg p-1 text-neutral-600 transition duration-100 hover:bg-neutral-700/40 hover:text-neutral-100",
                         editing &&
-                            "text-neutral-100 bg-neutral-700 hover:bg-neutral-600 opacity-100"
+                            "bg-neutral-700 text-neutral-100 opacity-100 hover:bg-neutral-600",
                     )}
                 >
                     <IconPencil size={20} stroke={1.5} />

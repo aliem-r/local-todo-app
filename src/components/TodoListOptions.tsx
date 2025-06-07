@@ -105,8 +105,8 @@ export default function TodoListOptions({
                 ref={optionsButtonRef}
                 onClick={() => setIsOptionsOpen(!isOptionsOpen)}
                 className={cn(
-                    "transition duration-100 cursor-pointer relative -top-1 -right-1 text-neutral-500 hover:text-neutral-100 p-1 bg-neutral-900 hover:bg-neutral-800 rounded-lg",
-                    isOptionsOpen && "text-neutral-100 bg-neutral-800"
+                    "relative -top-1 -right-1 cursor-pointer rounded-lg bg-neutral-900 p-1 text-neutral-500 transition duration-100 hover:bg-neutral-800 hover:text-neutral-100",
+                    isOptionsOpen && "bg-neutral-800 text-neutral-100",
                 )}
             >
                 <IconDotsVertical size={20} />
@@ -114,9 +114,9 @@ export default function TodoListOptions({
             {isOptionsOpen && (
                 <ul
                     ref={optionsListRef}
-                    className="absolute -right-1 top-full z-10 flex flex-col min-w-50 gap-0.5 p-2 rounded-lg bg-neutral-800 border border-neutral-700/40"
+                    className="absolute top-full -right-1 z-10 flex min-w-50 flex-col gap-0.5 rounded-lg border border-neutral-700/40 bg-neutral-800 p-2"
                 >
-                    <li className="p-1 px-2.5 text-xs text-neutral-600 font-[400] mb-1">
+                    <li className="mb-1 p-1 px-2.5 text-xs font-[400] text-neutral-600">
                         List options
                     </li>
                     {Object.entries(options).map(
@@ -127,8 +127,8 @@ export default function TodoListOptions({
                             <li
                                 key={key}
                                 className={cn(
-                                    "flex gap-2 items-center flex-1 group p-1 pr-3 pl-1.5 hover:bg-neutral-700/40 rounded-md text-sm font-[400] text-neutral-500 hover:text-neutral-100 cursor-pointer transition duration-100",
-                                    disabled
+                                    "group flex flex-1 cursor-pointer items-center gap-2 rounded-md p-1 pr-3 pl-1.5 text-sm font-[400] text-neutral-500 transition duration-100 hover:bg-neutral-700/40 hover:text-neutral-100",
+                                    disabled,
                                 )}
                                 onClick={() => {
                                     action?.();
@@ -138,12 +138,12 @@ export default function TodoListOptions({
                                 <span className="opacity-100 group-hover:opacity-0">
                                     {icon}
                                 </span>
-                                <span className=" absolute opacity-0 group-hover:opacity-100">
+                                <span className="absolute opacity-0 group-hover:opacity-100">
                                     {hoverIcon ?? icon}
                                 </span>
                                 <span>{label}</span>
                             </li>
-                        )
+                        ),
                     )}
                 </ul>
             )}

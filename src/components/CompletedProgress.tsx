@@ -13,9 +13,9 @@ export default function CompletedProgress({
 }: CompletedProgressProps) {
     return (
         <div className={cn("flex items-center gap-2", className)}>
-            <div className="flex-1 flex h-2 bg-neutral-800 rounded-full overflow-hidden">
+            <div className="flex h-2 flex-1 overflow-hidden rounded-full bg-neutral-800">
                 <span
-                    className="bg-green-400 h-full rounded-full transition-all duration-300"
+                    className="h-full rounded-full bg-green-400 transition-all duration-300"
                     style={{ width: `${percentage}%` }}
                 ></span>
             </div>
@@ -24,7 +24,7 @@ export default function CompletedProgress({
                     "text-xs",
                     percentage === 100
                         ? "text-green-500 transition duration-300"
-                        : "text-neutral-500"
+                        : "text-neutral-500",
                 )}
             >
                 {children}

@@ -74,22 +74,13 @@ export default memo(function TodoItem({
     return (
         <li
             className={cn(
-                "group relative flex items-start overflow-hidden rounded-xl border border-neutral-800 bg-neutral-800 transition duration-100 hover:border-neutral-700",
-                editing && "border-neutral-500 hover:border-neutral-500",
-                dimmed && "hover:border-neutral-800",
+                "group to-do-item",
+                editing && "editing",
+                dimmed && "dimmed",
             )}
         >
-            <div
-                className={cn(
-                    "absolute inset-0 z-10 bg-neutral-900/60 transition-opacity duration-100",
-                    // when not dimmed, make it fully transparent and non-interactive
-                    dimmed ? "opacity-100" : "pointer-events-none opacity-0",
-                )}
-            />
-            <label
-                htmlFor={id}
-                className="flex flex-1 cursor-pointer items-start gap-2 overflow-hidden p-3 select-none"
-            >
+            <div className="overlay" />
+            <label htmlFor={id}>
                 {editing ? (
                     <Fragment>
                         <button
@@ -98,7 +89,7 @@ export default memo(function TodoItem({
                         >
                             <IconSquareRoundedLetterIFilled
                                 size={20}
-                                className="shrink-0 rotate-90 text-rose-600 transition duration-100 hover:text-rose-400"
+                                className="remove-item-icon"
                             />
                         </button>
                         <textarea
@@ -117,7 +108,6 @@ export default memo(function TodoItem({
                                 }
                             }}
                             rows={1}
-                            className="relative h-5 flex-1 resize-none overflow-hidden border-b border-neutral-700 text-sm outline-0"
                         />
                     </Fragment>
                 ) : (
@@ -132,44 +122,27 @@ export default memo(function TodoItem({
                         {completed ? (
                             <IconSquareRoundedCheckFilled
                                 size={20}
-                                className="shrink-0 text-green-400"
+                                className="check-icon checked"
                             />
                         ) : (
                             <IconSquareRoundedCheck
                                 size={20}
                                 stroke={1.5}
-                                className="shrink-0 text-neutral-400"
+                                className="check-icon"
                             />
                         )}
-                        <span
-                            className={cn(
-                                "text-sm",
-                                completed && "text-neutral-400 line-through",
-                            )}
-                        >
+                        <span className={cn(completed && "checked")}>
                             {text}
                         </span>
                     </Fragment>
                 )}
             </label>
             {editing ? (
-                <button
-                    onClick={() => handleSave()}
-                    className="mt-2 mr-2 cursor-pointer rounded-lg bg-neutral-700 p-1 text-neutral-100 opacity-100 transition duration-100 hover:bg-neutral-600"
-                >
+                <button onClick={() => handleSave()} className="">
                     <IconDeviceFloppy size={20} stroke={1.5} />
                 </button>
             ) : (
-                <button
-                    onClick={() => onStartEditing(id)}
-                    className={cn(
-                        "opacity-0 transition",
-                        !dimmed && "group-hover:opacity-100",
-                        "mt-2 mr-2 cursor-pointer rounded-lg p-1 text-neutral-600 transition duration-100 hover:bg-neutral-700/40 hover:text-neutral-100",
-                        editing &&
-                            "bg-neutral-700 text-neutral-100 opacity-100 hover:bg-neutral-600",
-                    )}
-                >
+                <button onClick={() => onStartEditing(id)}>
                     <IconPencil size={20} stroke={1.5} />
                 </button>
             )}

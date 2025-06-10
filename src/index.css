@@ -1,21 +1,273 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 @import "tailwindcss";
 
-:root {
-    font-family: "Rubik", sans-serif;
-    line-height: 1.5;
-    font-weight: 300;
-    letter-spacing: 0.02em;
+/*
+Organization Guide
+
+=== Layout ============================================== 
+ display, flex, grid, box-sizing, margin, padding, gap,
+ width, height, min-/max-, position, top/right/bottom/left, z-index, overflow 
+
+ === Typography =========================================== 
+ font-family, font-size, font-weight, line-height, letter-spacing,
+ text-align, text-decoration, white-space
+
+ === Visual ================================================ 
+ color, background-color/image/position/size/repeat,
+ border-width/style/color, border-radius,
+ box-shadow, filter (blur, brightness, etc.) 
+
+ === Interaction =========================================== 
+ transition, animation, cursor, pointer-events,
+ pseudo-classes (:hover, :focus, :active, etc.) 
+
+ === Responsive =========================================== 
+ @media queries, responsive variants (sm:, md:, lg:, etc.)
+ */
+
+@theme {
+    --font-rubik: "Rubik", sans-serif;
+    --font-weight-normal: 350;
+    --font-weight-medium: 400;
+    --font-weight-semibold: 500;
+    --font-weight-bold: 600;
 }
 
-body {
-    @apply flex min-h-screen justify-center bg-neutral-950 text-white;
+@layer base {
+    :root {
+        @apply font-rubik text-base font-normal tracking-[0.02em];
+    }
+
+    body {
+        @apply flex min-h-screen justify-center;
+        @apply bg-neutral-950 text-white;
+    }
+
+    h2 {
+        @apply text-lg font-semibold;
+    }
 }
 
-.hold-to-delete-md {
-    @apply w-full bg-rose-500 duration-[1500ms] ease-linear;
+@layer components {
+    /* === Component: Header ============================== */
+
+    header {
+        @apply flex justify-around py-12;
+
+        > div {
+            @apply flex items-center gap-2;
+            @apply text-2xl font-semibold text-neutral-700;
+
+            svg {
+                @apply size-7;
+            }
+        }
+    }
+
+    /* === Component: TodoListWrapper ===================== */
+
+    .to-do-list {
+        @apply flex w-sm flex-col gap-2.5 p-5;
+        @apply rounded-3xl border border-neutral-800 bg-neutral-900;
+        @apply transition duration-300;
+
+        &.completed {
+            @apply border border-green-800 shadow-lg shadow-green-500/10;
+        }
+
+        .header-w {
+            @apply relative -top-1 flex items-center justify-between;
+        }
+
+        .completed-separator {
+            @apply mt-1 mb-1 flex items-center gap-2 text-sm font-[400] text-neutral-600;
+
+            hr {
+                @apply flex-1 border-neutral-700;
+            }
+        }
+    }
+
+    /* === Component: TodoListOptions ===================== */
+
+    .to-do-options {
+        button {
+            @apply relative -right-1 p-1;
+            @apply rounded-lg bg-neutral-900 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100;
+            @apply cursor-pointer transition duration-100;
+        }
+
+        &.open button {
+            @apply bg-neutral-800 text-neutral-100;
+        }
+
+        ul {
+            @apply absolute top-full -right-1 z-10 mt-1 flex min-w-50 flex-col gap-0.5 p-2;
+            @apply rounded-lg border border-neutral-700/40 bg-neutral-800;
+
+            li {
+                @apply flex flex-1 items-center gap-2 p-1 pr-3 pl-1.5;
+                @apply text-sm font-medium;
+                @apply rounded-md text-neutral-500 hover:bg-neutral-700/40 hover:text-neutral-100;
+                @apply cursor-pointer transition duration-100;
+
+                &:first-of-type {
+                    @apply pointer-events-none mb-1;
+                    @apply text-xs text-neutral-600;
+                }
+
+                &.disabled {
+                    @apply pointer-events-none opacity-40;
+                }
+
+                span.icon {
+                    @apply opacity-100 group-hover:opacity-0;
+                }
+
+                span.hover-icon {
+                    @apply absolute opacity-0 group-hover:opacity-100;
+                }
+            }
+        }
+    }
+
+    /* === Component: CompletedProgress =================== */
+
+    .progress-bar-w {
+        @apply mb-3 flex items-center gap-2;
+        @apply font-mono text-xs text-neutral-500;
+
+        .progress-bar {
+            @apply flex h-2 flex-1 overflow-hidden;
+            @apply rounded-full bg-neutral-800;
+
+            span {
+                @apply h-full;
+                @apply rounded-full bg-green-400;
+                @apply transition-all duration-300;
+            }
+        }
+
+        p.completed {
+            @apply text-green-500 transition duration-300;
+        }
+    }
+
+    /* === Component: NewTodoForm ========================= */
+
+    .to-do-form {
+        @apply flex items-center gap-2;
+
+        input {
+            @apply h-11 w-full px-3;
+            @apply text-sm font-medium;
+            @apply rounded-xl border border-neutral-700 placeholder-neutral-500 outline-0 hover:border-neutral-600 focus:border-neutral-500;
+            @apply transition duration-100;
+        }
+
+        button {
+            @apply flex aspect-square w-12 items-center justify-center;
+            @apply rounded-xl bg-neutral-300 text-neutral-900 hover:bg-neutral-100;
+            @apply cursor-pointer transition duration-100;
+        }
+    }
+
+    /* === Component: TodoListSection ===================== */
+
+    .to-do-list-sec {
+        ul {
+            @apply flex flex-col gap-2;
+        }
+
+        > .empty-sec {
+            @apply flex items-center gap-2 p-3;
+            @apply text-sm font-medium;
+            @apply rounded-xl border border-dashed border-neutral-700/70 text-neutral-600/60;
+        }
+    }
+
+    /* === Component: TodoItem ============================ */
+
+    .to-do-item {
+        @apply relative flex items-start overflow-hidden;
+        @apply rounded-xl border border-neutral-800 bg-neutral-800 hover:border-neutral-700;
+        @apply transition duration-100;
+
+        .overlay {
+            @apply absolute inset-0 z-10;
+            @apply bg-neutral-900/60 opacity-0;
+            @apply pointer-events-none transition-opacity duration-100;
+        }
+
+        &.editing {
+            @apply border-neutral-500 hover:border-neutral-500;
+        }
+
+        &.dimmed {
+            @apply hover:border-neutral-800;
+
+            .overlay {
+                @apply pointer-events-auto opacity-100;
+            }
+        }
+
+        label {
+            @apply flex flex-1 items-start gap-2 overflow-hidden p-3;
+            @apply text-sm;
+            @apply cursor-pointer select-none;
+
+            .remove-item-icon {
+                @apply shrink-0 rotate-90;
+                @apply text-rose-600 hover:text-rose-400;
+                @apply transition duration-100;
+            }
+
+            textarea {
+                @apply relative h-5 flex-1 resize-none overflow-hidden border-b text-sm outline-0;
+                @apply text-sm;
+                @apply border-neutral-700;
+            }
+
+            .check-icon {
+                @apply shrink-0 text-neutral-400;
+
+                &.checked {
+                    @apply shrink-0 text-green-400;
+                }
+            }
+
+            span.checked {
+                @apply text-neutral-400 line-through;
+            }
+        }
+        > button {
+            @apply mt-2 mr-2 p-1 opacity-0;
+            @apply rounded-lg text-neutral-600 hover:bg-neutral-700/40 hover:text-neutral-100;
+            @apply cursor-pointer transition duration-100;
+
+            .to-do-item:not(.dimmed) & {
+                @apply group-hover:opacity-100;
+            }
+            .to-do-item.editing & {
+                @apply mt-2 mr-2 p-1 text-neutral-100 opacity-100;
+                @apply rounded-lg bg-neutral-700 hover:bg-neutral-600;
+                @apply cursor-pointer transition duration-100;
+            }
+        }
+    }
+
+    /* === Component: Footer ============================== */
+
+    footer {
+        @apply flex items-center justify-center gap-2 py-12;
+        @apply text-sm font-medium text-neutral-600;
+
+        a {
+            @apply text-neutral-600 underline hover:text-green-400;
+            @apply transition duration-100;
+        }
+    }
 }
 
-.hold-to-delete-mu {
-    @apply w-0 bg-rose-500/10 duration-[300ms] ease-in;
+@layer utilities {
 }

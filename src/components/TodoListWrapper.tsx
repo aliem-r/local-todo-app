@@ -98,14 +98,14 @@ export default function TodoListWrapper() {
     return (
         <section
             className={cn(
-                "flex w-sm flex-col gap-2.5 rounded-3xl bg-neutral-900 p-5 transition duration-300",
-                completedTodos.length === todoList.length && todoList.length > 0
-                    ? "border border-green-800 shadow-lg shadow-green-500/10"
-                    : "border border-neutral-800",
+                "to-do-list",
+                completedTodos.length === todoList.length &&
+                    todoList.length > 0 &&
+                    "completed",
             )}
         >
-            <div className="relative mb-3 flex items-center justify-between">
-                <h2 className="mb-1 text-lg font-medium">Your to-dos</h2>
+            <div className="header-w">
+                <h2>Your to-dos</h2>
                 <TodoListOptions
                     pendingCount={pendingTodos.length}
                     completedCount={completedTodos.length}
@@ -114,16 +114,13 @@ export default function TodoListWrapper() {
                     onClearAll={handleClearAll}
                 />
             </div>
-            <CompletedProgress
-                percentage={percentage}
-                className="mb-3 font-mono"
-            >
+            <CompletedProgress percentage={percentage}>
                 {`${completedTodos.length}/${todoList.length} DONE`}
             </CompletedProgress>
             <NewTodoForm onAddNewTodo={handleAddNewTodo} />
             <TodoListSection
                 emptyMessage={
-                    <div className="flex items-center gap-2 rounded-xl border border-dashed border-neutral-700/70 p-3 text-sm font-[400] text-neutral-600/60">
+                    <div className="empty-sec">
                         <IconSquareRoundedCheck size={20} stroke={1} /> No
                         to-dos yet. Add one!
                     </div>
@@ -137,15 +134,15 @@ export default function TodoListWrapper() {
                 onRemoveTodo={handleRemoveTodo}
             />
             {todoList.length > 0 && (
-                <div className="mt-1 mb-1 flex items-center gap-2 text-sm font-[400] text-neutral-600">
+                <div className="completed-separator">
                     <span>Completed</span>
-                    <hr className="flex-1 border-neutral-700" />
+                    <hr />
                 </div>
             )}
             <TodoListSection
                 emptyMessage={
                     todoList.length === 0 ? null : (
-                        <div className="flex items-center gap-2 rounded-xl border border-dashed border-neutral-700/70 p-3 text-sm font-[400] text-neutral-600/60">
+                        <div className="empty-sec">
                             <IconSquareRoundedCheckFilled
                                 size={20}
                                 stroke={1}

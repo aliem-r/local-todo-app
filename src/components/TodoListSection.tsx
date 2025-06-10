@@ -1,4 +1,3 @@
-import { Fragment } from "react/jsx-runtime";
 import type { Todo } from "../todos/todoTypes";
 import TodoItem from "./TodoItem";
 
@@ -24,11 +23,11 @@ export default function TodoListSection({
     onRemoveTodo,
 }: TodoListSectionProps) {
     return (
-        <Fragment>
+        <div className="to-do-list-sec">
             {items.length === 0 ? (
                 emptyMessage
             ) : (
-                <ul className="flex flex-col gap-2">
+                <ul className="">
                     {items.map((todo) => (
                         <TodoItem
                             key={todo.id}
@@ -46,6 +45,6 @@ export default function TodoListSection({
                     ))}
                 </ul>
             )}
-        </Fragment>
+        </div>
     );
 }

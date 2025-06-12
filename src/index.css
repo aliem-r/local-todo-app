@@ -25,22 +25,40 @@ Organization Guide
  @media queries, responsive variants (sm:, md:, lg:, etc.)
  */
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant sky (&:where([data-theme=sky], [data-theme=sky] *));
+
 @theme {
     --font-rubik: "Rubik", sans-serif;
     --font-weight-normal: 350;
     --font-weight-medium: 400;
     --font-weight-semibold: 500;
     --font-weight-bold: 600;
+
+    --color-accent: var(--color-emerald-500);
+}
+
+[data-theme="dark"] {
+    --color-accent: var(--color-green-500);
+}
+[data-theme="sky"] {
+    --color-accent: var(--color-cyan-500);
 }
 
 @layer base {
     :root {
-        @apply font-rubik text-base font-normal tracking-[0.02em];
+        @apply font-rubik text-base font-medium tracking-[0.02em];
+        @apply /* dark theme */ dark:font-normal;
+    }
+    :root * {
+        @apply transition-colors duration-100;
     }
 
     body {
         @apply flex min-h-screen justify-center;
-        @apply bg-neutral-950 text-white;
+        @apply bg-zinc-300 text-zinc-800;
+        @apply /* dark theme */ dark:bg-neutral-950 dark:text-white;
+        @apply /* sky theme */ sky:bg-linear-to-b sky:from-sky-400 sky:via-sky-300 sky:to-gray-100 sky:from-0% sky:via-40%;
     }
 
     h2 {
@@ -52,15 +70,25 @@ Organization Guide
     /* === Component: Header ============================== */
 
     header {
-        @apply flex justify-around py-12;
+        @apply flex items-center justify-between px-5 py-12;
 
         > div {
             @apply flex items-center gap-2;
-            @apply text-2xl font-semibold text-neutral-700;
+            @apply text-2xl font-semibold text-zinc-400;
+            @apply /* dark theme */ dark:text-neutral-700;
+            @apply /* sky theme */ sky:text-sky-200;
 
             svg {
                 @apply size-7;
             }
+        }
+
+        > button {
+            @apply aspect-square h-5 w-5;
+            @apply rounded-full bg-neutral-900;
+            @apply /* dark theme */ dark:bg-linear-to-bl dark:from-white dark:to-sky-500;
+            @apply /* sky theme */ sky:bg-white;
+            @apply cursor-pointer;
         }
     }
 
@@ -68,11 +96,13 @@ Organization Guide
 
     .to-do-list {
         @apply flex w-sm flex-col gap-2.5 p-5;
-        @apply rounded-3xl border border-neutral-800 bg-neutral-900;
-        @apply transition duration-300;
+        @apply rounded-3xl border border-zinc-400/40 bg-zinc-200 outline-4 outline-transparent;
+        @apply /* dark theme */ dark:border-neutral-800 dark:bg-neutral-900 dark:outline-4 dark:outline-transparent;
+        @apply /* sky theme */ sky:border-transparent sky:bg-sky-100/80 sky:outline-4 sky:outline-sky-100/40;
 
         &.completed {
-            @apply border border-green-800 shadow-lg shadow-green-500/10;
+            @apply border-accent/40 shadow-accent/10 border shadow-lg;
+            @apply /* sky theme */ sky:border-transparent sky:shadow-white/10 sky:outline-white/80;
         }
 
         .header-w {
@@ -80,10 +110,14 @@ Organization Guide
         }
 
         .completed-separator {
-            @apply mt-1 mb-1 flex items-center gap-2 text-sm font-[400] text-neutral-600;
+            @apply mt-1 mb-1 flex items-center gap-2 text-sm font-medium text-zinc-400;
+            @apply /* dark theme */ dark:text-neutral-500;
+            @apply /* sky theme */ sky:text-sky-500/80;
 
             hr {
-                @apply flex-1 border-neutral-700;
+                @apply flex-1 border-zinc-400/50;
+                @apply /* dark theme */ dark:border-neutral-700;
+                @apply /* sky theme */ sky:border-sky-500/40;
             }
         }
     }
@@ -93,27 +127,37 @@ Organization Guide
     .to-do-options {
         button {
             @apply relative -right-1 p-1;
-            @apply rounded-lg bg-neutral-900 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100;
-            @apply cursor-pointer transition duration-100;
+            @apply rounded-lg bg-zinc-200 text-zinc-700 hover:bg-zinc-400/50 hover:text-zinc-900;
+            @apply /* dark theme */ dark:bg-neutral-900 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-100;
+            @apply /* sky theme */ sky:bg-transparent sky:text-zinc-900/50 sky:hover:bg-sky-100/80 sky:hover:text-zinc-800;
+            @apply cursor-pointer;
         }
 
         &.open button {
-            @apply bg-neutral-800 text-neutral-100;
+            @apply bg-zinc-400/50 text-zinc-900;
+            @apply /* dark theme */ dark:bg-neutral-800 dark:text-neutral-100;
+            @apply /* sky theme */ sky:bg-sky-100/80 sky:text-zinc-800;
         }
 
         ul {
             @apply absolute top-full -right-1 z-10 mt-1 flex min-w-50 flex-col gap-0.5 p-2;
-            @apply rounded-lg border border-neutral-700/40 bg-neutral-800;
+            @apply rounded-lg border border-zinc-300 bg-zinc-100;
+            @apply /* dark theme */ dark:border-neutral-700/40 dark:bg-neutral-800;
+            @apply /* sky theme */ sky:border-sky-100 sky:bg-sky-100;
 
             li {
                 @apply flex flex-1 items-center gap-2 p-1 pr-3 pl-1.5;
                 @apply text-sm font-medium;
-                @apply rounded-md text-neutral-500 hover:bg-neutral-700/40 hover:text-neutral-100;
-                @apply cursor-pointer transition duration-100;
+                @apply rounded-md text-zinc-500 hover:bg-zinc-300 hover:text-zinc-600;
+                @apply /* dark theme */ dark:text-neutral-500 dark:hover:bg-neutral-700/40 dark:hover:text-neutral-100;
+                @apply /* sky theme */ sky:text-zinc-600 sky:hover:bg-sky-500/10 sky:hover:text-zinc-800;
+                @apply cursor-pointer;
 
                 &:first-of-type {
                     @apply pointer-events-none mb-1;
-                    @apply text-xs text-neutral-600;
+                    @apply text-xs text-zinc-500;
+                    @apply /* dark theme */ text-neutral-400;
+                    @apply /* sky theme */ sky:text-zinc-900/40;
                 }
 
                 &.disabled {
@@ -135,21 +179,24 @@ Organization Guide
 
     .progress-bar-w {
         @apply mb-3 flex items-center gap-2;
-        @apply font-mono text-xs text-neutral-500;
+        @apply font-mono text-xs text-zinc-500;
+        @apply /* dark theme */ dark:text-neutral-500;
+        @apply /* sky theme */ sky:text-zinc-500;
 
         .progress-bar {
             @apply flex h-2 flex-1 overflow-hidden;
-            @apply rounded-full bg-neutral-800;
+            @apply rounded-full bg-zinc-400/30;
+            @apply /* dark theme */ dark:bg-neutral-800;
+            @apply /* sky theme */ sky:bg-white/40;
 
             span {
                 @apply h-full;
-                @apply rounded-full bg-green-400;
-                @apply transition-all duration-300;
+                @apply bg-accent rounded-full;
             }
         }
 
         p.completed {
-            @apply text-green-500 transition duration-300;
+            @apply text-accent;
         }
     }
 
@@ -161,14 +208,17 @@ Organization Guide
         input {
             @apply h-11 w-full px-3;
             @apply text-sm font-medium;
-            @apply rounded-xl border border-neutral-700 placeholder-neutral-500 outline-0 hover:border-neutral-600 focus:border-neutral-500;
-            @apply transition duration-100;
+            @apply rounded-xl border border-zinc-400 placeholder-zinc-500 outline-0 hover:border-zinc-500 focus:border-zinc-600;
+            @apply /* dark theme */ dark:border-neutral-700 dark:placeholder-neutral-500 dark:outline-0 dark:hover:border-neutral-500 dark:focus:border-neutral-500;
+            @apply /* sky theme */ sky:border-sky-950/30 sky:placeholder-sky-950/50 sky:outline-0 sky:hover:border-sky-950/50 sky:focus:border-sky-950/70;
         }
 
         button {
             @apply flex aspect-square w-12 items-center justify-center;
-            @apply rounded-xl bg-neutral-300 text-neutral-900 hover:bg-neutral-100;
-            @apply cursor-pointer transition duration-100;
+            @apply rounded-xl bg-zinc-800 text-zinc-100;
+            @apply /* dark theme */ dark:bg-neutral-100 dark:text-neutral-900;
+            @apply /* sky theme */ sky:bg-zinc-100 sky:text-zinc-900;
+            @apply cursor-pointer;
         }
     }
 
@@ -182,7 +232,9 @@ Organization Guide
         > .empty-sec {
             @apply flex items-center gap-2 p-3;
             @apply text-sm font-medium;
-            @apply rounded-xl border border-dashed border-neutral-700/70 text-neutral-600/60;
+            @apply rounded-xl border border-dashed border-zinc-400/80 text-zinc-400/80;
+            @apply /* dark theme */ dark:border-neutral-700 dark:text-neutral-700;
+            @apply /* sky theme */ sky:border-sky-600/60 sky:text-sky-600/40;
         }
     }
 
@@ -190,24 +242,31 @@ Organization Guide
 
     .to-do-item {
         @apply relative flex items-start overflow-hidden;
-        @apply rounded-xl border border-neutral-800 bg-neutral-800 hover:border-neutral-700;
-        @apply transition duration-100;
+        @apply rounded-xl border border-zinc-100 bg-zinc-100 hover:border-zinc-300;
+        @apply /* dark theme */ dark:border-neutral-800 dark:bg-neutral-800 dark:hover:border-neutral-700;
+        @apply /* sky theme */ sky:border-sky-50 sky:bg-sky-50 sky:hover:border-sky-300;
 
         .overlay {
             @apply absolute inset-0 z-10;
-            @apply bg-neutral-900/60 opacity-0;
-            @apply pointer-events-none transition-opacity duration-100;
+            @apply bg-zinc-200 opacity-0;
+            @apply /* dark theme */ dark:bg-neutral-900;
+            @apply /* sky theme */ sky:bg-sky-200;
+            @apply pointer-events-none;
         }
 
         &.editing {
-            @apply border-neutral-500 hover:border-neutral-500;
+            @apply border-zinc-300 hover:border-zinc-300;
+            @apply /* dark theme */ dark:border-neutral-500 dark:hover:border-neutral-500;
+            @apply /* sky theme */ sky:border-sky-300 sky:hover:border-sky-300;
         }
 
         &.dimmed {
-            @apply hover:border-neutral-800;
+            @apply border-zinc-200 hover:border-zinc-200;
+            @apply /* dark theme */ dark:border-neutral-800 dark:hover:border-neutral-800;
+            @apply /* sky theme */ sky:border-sky-200/50 sky:hover:border-sky-200/50;
 
             .overlay {
-                @apply pointer-events-auto opacity-100;
+                @apply pointer-events-auto opacity-60;
             }
         }
 
@@ -218,40 +277,49 @@ Organization Guide
 
             .remove-item-icon {
                 @apply shrink-0 rotate-90;
-                @apply text-rose-600 hover:text-rose-400;
-                @apply transition duration-100;
+                @apply text-rose-500;
             }
 
             textarea {
                 @apply relative h-5 flex-1 resize-none overflow-hidden border-b text-sm outline-0;
                 @apply text-sm;
-                @apply border-neutral-700;
+                @apply border-zinc-400/50;
+                @apply /* dark theme */ dark:border-neutral-700;
+                @apply /* sky theme */ sky:border-sky-200;
             }
 
             .check-icon {
-                @apply shrink-0 text-neutral-400;
+                @apply shrink-0 text-zinc-500;
+                @apply /* dark theme */ dark:text-neutral-400;
+                @apply /* sky theme */ sky:text-zinc-400;
 
                 &.checked {
-                    @apply shrink-0 text-green-400;
+                    @apply text-accent shrink-0;
                 }
             }
 
             span.checked {
-                @apply text-neutral-400 line-through;
+                @apply text-zinc-400 line-through;
+                @apply /* dark theme */ dark:text-neutral-400;
+                @apply /* sky theme */ sky:text-zinc-500/60;
             }
         }
         > button {
             @apply mt-2 mr-2 p-1 opacity-0;
-            @apply rounded-lg text-neutral-600 hover:bg-neutral-700/40 hover:text-neutral-100;
-            @apply cursor-pointer transition duration-100;
+            @apply rounded-lg text-zinc-400 hover:bg-zinc-300/60 hover:text-zinc-500;
+            @apply /* dark theme */ dark:text-neutral-500 dark:hover:bg-neutral-700/40 dark:hover:text-neutral-100;
+            @apply /* sky theme */ sky:text-zinc-400/80 sky:hover:bg-sky-200/50 sky:hover:text-sky-800/50;
+            @apply cursor-pointer;
 
             .to-do-item:not(.dimmed) & {
                 @apply group-hover:opacity-100;
             }
             .to-do-item.editing & {
-                @apply mt-2 mr-2 p-1 text-neutral-100 opacity-100;
-                @apply rounded-lg bg-neutral-700 hover:bg-neutral-600;
-                @apply cursor-pointer transition duration-100;
+                @apply mt-2 mr-2 p-1 opacity-100;
+                @apply rounded-lg bg-zinc-300/60 text-zinc-500 hover:bg-zinc-400/50 hover:text-zinc-600;
+                @apply /* dark theme */ dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-500 dark:hover:text-neutral-100;
+                @apply /* sky theme */ sky:bg-sky-200/50 sky:text-sky-800/50 sky:hover:bg-sky-200 sky:hover:text-sky-800;
+                @apply cursor-pointer;
             }
         }
     }
@@ -260,11 +328,14 @@ Organization Guide
 
     footer {
         @apply flex items-center justify-center gap-2 py-12;
-        @apply text-sm font-medium text-neutral-600;
+        @apply text-sm font-medium text-zinc-500;
+        @apply /* dark theme */ dark:text-neutral-500;
+        @apply /* sky theme */ sky:text-sky-950/50;
 
         a {
-            @apply text-neutral-600 underline hover:text-green-400;
-            @apply transition duration-100;
+            @apply hover:text-accent text-zinc-500 underline;
+            @apply /* dark theme */ dark:text-neutral-500;
+            @apply /* sky theme */ sky:text-sky-950/50;
         }
     }
 }

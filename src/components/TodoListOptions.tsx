@@ -8,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { useEffect, useRef, useState, type JSX } from "react";
 import { cn } from "../utils";
+import { AnimatePresence, motion } from "motion/react";
 
 type TodoListOptionsProps = {
     pendingCount: number;
@@ -101,32 +102,55 @@ export default function TodoListOptions({
             >
                 <IconDotsVertical size={20} />
             </button>
-            {isOptionsOpen && (
-                <ul ref={optionsListRef} className="to-do-options">
-                    <li>List options</li>
-                    {Object.entries(options).map(
-                        ([
-                            key,
-                            { label, icon, hoverIcon, disabled, action },
-                        ]) => (
-                            <li
-                                key={key}
-                                className={cn("group", disabled && "disabled")}
-                                onClick={() => {
-                                    action?.();
-                                    setIsOptionsOpen(false);
-                                }}
-                            >
-                                <span className="icon">{icon}</span>
-                                <span className="hover-icon">
-                                    {hoverIcon ?? icon}
-                                </span>
-                                <span>{label}</span>
-                            </li>
-                        ),
-                    )}
-                </ul>
-            )}
+            <AnimatePresence>
+                {isOptionsOpen && (
+                    <motion.ul
+                        initial={{
+                            opacity: 0,
+                            scale: 0.9,
+                            transformOrigin: "100% 0%",
+                        }}
+                        animate={{
+                            opacity: 1,
+                            scale: 1,
+                        }}
+                        exit={{
+                            opacity: 0,
+                            scale: 0.9,
+                        }}
+                        transition={{ duration: 0.1 }}
+                        layout
+                        ref={optionsListRef}
+                        className="to-do-options"
+                    >
+                        <li>List options</li>
+                        {Object.entries(options).map(
+                            ([
+                                key,
+                                { label, icon, hoverIcon, disabled, action },
+                            ]) => (
+                                <li
+                                    key={key}
+                                    className={cn(
+                                        "group",
+                                        disabled && "disabled",
+                                    )}
+                                    onClick={() => {
+                                        action?.();
+                                        setIsOptionsOpen(false);
+                                    }}
+                                >
+                                    <span className="icon">{icon}</span>
+                                    <span className="hover-icon">
+                                        {hoverIcon ?? icon}
+                                    </span>
+                                    <span>{label}</span>
+                                </li>
+                            ),
+                        )}
+                    </motion.ul>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

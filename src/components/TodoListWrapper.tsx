@@ -19,6 +19,7 @@ import CompletedProgress from "./CompletedProgress";
 import NewTodoForm from "./NewTodoForm";
 import TodoListOptions from "./TodoListOptions";
 import TodoListSection from "./TodoListSection";
+import { AnimatePresence } from "motion/react";
 
 export default function TodoListWrapper() {
     const [todoList, setTodoList] = useState<Todo[]>(getTodoList());
@@ -118,47 +119,49 @@ export default function TodoListWrapper() {
                 {`${completedTodos.length}/${todoList.length} DONE`}
             </CompletedProgress>
             <NewTodoForm onAddNewTodo={handleAddNewTodo} />
-            <TodoListSection
-                emptyMessage={
-                    <div className="empty-sec">
-                        <IconSquareRoundedCheck size={20} stroke={1} /> No
-                        to-dos yet. Add one!
-                    </div>
-                }
-                items={pendingTodos}
-                editingId={editingId}
-                onStartEditing={handleStartEditing}
-                onSaveEditedTodo={handleSaveEditedTodo}
-                onCancelEditing={handleCancelEditing}
-                onToggleCheck={handleToggleCheck}
-                onRemoveTodo={handleRemoveTodo}
-            />
-            {todoList.length > 0 && (
-                <div className="completed-separator">
-                    <span>Completed</span>
-                    <hr />
-                </div>
-            )}
-            <TodoListSection
-                emptyMessage={
-                    todoList.length === 0 ? null : (
+            <AnimatePresence>
+                <TodoListSection
+                    emptyMessage={
                         <div className="empty-sec">
-                            <IconSquareRoundedCheckFilled
-                                size={20}
-                                stroke={1}
-                            />{" "}
-                            No completed to-dos yet
+                            <IconSquareRoundedCheck size={20} stroke={1} /> No
+                            to-dos yet. Add one!
                         </div>
-                    )
-                }
-                items={completedTodos}
-                editingId={editingId}
-                onStartEditing={handleStartEditing}
-                onSaveEditedTodo={handleSaveEditedTodo}
-                onCancelEditing={handleCancelEditing}
-                onToggleCheck={handleToggleCheck}
-                onRemoveTodo={handleRemoveTodo}
-            />
+                    }
+                    items={pendingTodos}
+                    editingId={editingId}
+                    onStartEditing={handleStartEditing}
+                    onSaveEditedTodo={handleSaveEditedTodo}
+                    onCancelEditing={handleCancelEditing}
+                    onToggleCheck={handleToggleCheck}
+                    onRemoveTodo={handleRemoveTodo}
+                />
+                {todoList.length > 0 && (
+                    <div className="completed-separator">
+                        <span>Completed</span>
+                        <hr />
+                    </div>
+                )}
+                <TodoListSection
+                    emptyMessage={
+                        todoList.length === 0 ? null : (
+                            <div className="empty-sec">
+                                <IconSquareRoundedCheckFilled
+                                    size={20}
+                                    stroke={1}
+                                />{" "}
+                                No completed to-dos yet
+                            </div>
+                        )
+                    }
+                    items={completedTodos}
+                    editingId={editingId}
+                    onStartEditing={handleStartEditing}
+                    onSaveEditedTodo={handleSaveEditedTodo}
+                    onCancelEditing={handleCancelEditing}
+                    onToggleCheck={handleToggleCheck}
+                    onRemoveTodo={handleRemoveTodo}
+                />
+            </AnimatePresence>
         </section>
     );
 }

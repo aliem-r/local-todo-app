@@ -5,6 +5,7 @@ import {
     IconSquareRoundedCheckFilled,
     IconSquareRoundedLetterIFilled,
 } from "@tabler/icons-react";
+import { motion } from "motion/react";
 import {
     Fragment,
     memo,
@@ -72,7 +73,11 @@ export default memo(function TodoItem({
     };
 
     return (
-        <li
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            layout
             className={cn(
                 "group to-do-item",
                 editing && "editing",
@@ -146,6 +151,6 @@ export default memo(function TodoItem({
                     <IconPencil size={20} stroke={1.5} />
                 </button>
             )}
-        </li>
+        </motion.div>
     );
 });

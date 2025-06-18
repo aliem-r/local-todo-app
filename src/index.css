@@ -59,6 +59,10 @@ Organization Guide
         @apply bg-zinc-300 text-zinc-800;
         @apply /* dark theme */ dark:bg-neutral-950 dark:text-white;
         @apply /* sky theme */ sky:bg-linear-to-b sky:from-sky-400 sky:via-sky-300 sky:to-gray-100 sky:from-0% sky:via-40%;
+
+        #root {
+            @apply flex flex-col;
+        }
     }
 
     h2 {
@@ -327,7 +331,7 @@ Organization Guide
     /* === Component: Footer ============================== */
 
     footer {
-        @apply flex items-center justify-center gap-2 py-12;
+        @apply mt-auto flex items-center justify-center gap-2 py-12;
         @apply text-sm font-medium text-zinc-500;
         @apply /* dark theme */ dark:text-neutral-500;
         @apply /* sky theme */ sky:text-sky-950/50;
@@ -335,7 +339,7 @@ Organization Guide
         a {
             @apply hover:text-accent text-zinc-500 underline;
             @apply /* dark theme */ dark:text-neutral-500;
-            @apply /* sky theme */ sky:text-sky-950/50;
+            @apply /* sky theme */ sky:text-sky-950/50 hover:text-accent;
         }
     }
 }

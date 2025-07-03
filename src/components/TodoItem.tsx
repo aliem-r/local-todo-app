@@ -6,14 +6,7 @@ import {
     IconSquareRoundedLetterIFilled,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
-import {
-    Fragment,
-    memo,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react";
+import { Fragment, memo, useLayoutEffect, useRef, useState } from "react";
 import { cleanText, cn } from "../utils";
 
 type TodoItemProps = {
@@ -55,7 +48,7 @@ export default memo(function TodoItem({
     }, [draft, editing]);
 
     // Move cursor to the end of the textarea when editing starts
-    useEffect(() => {
+    useLayoutEffect(() => {
         const textarea = draftRef.current;
 
         if (editing && textarea) {

@@ -194,7 +194,7 @@ Organization Guide
             @apply /* sky theme */ sky:bg-white/40;
 
             span {
-                @apply h-full;
+                @apply h-full transition-[width];
                 @apply bg-accent rounded-full;
             }
         }

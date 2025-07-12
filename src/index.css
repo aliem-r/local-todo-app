@@ -309,7 +309,7 @@ Organization Guide
             }
         }
         > button {
-            @apply mt-2 mr-2 p-1 opacity-0;
+            @apply mt-2 mr-2 p-1 lg:opacity-0;
             @apply rounded-lg text-zinc-400 hover:bg-zinc-300/60 hover:text-zinc-500;
             @apply /* dark theme */ dark:text-neutral-500 dark:hover:bg-neutral-700/40 dark:hover:text-neutral-100;
             @apply /* sky theme */ sky:text-zinc-400/80 sky:hover:bg-sky-200/50 sky:hover:text-sky-800/50;
